@@ -1,3 +1,33 @@
+function Ball () {
+    knife = sprites.createProjectileFromSprite(img`
+. . . . . . . . . . . . . . . . 
+. . . . . 2 . . . . . . . . . . 
+. . . . . 2 2 . . . . . . . . . 
+. . . . . 1 2 2 . . . . . . . . 
+. . . . . 1 1 2 . . . . . . . . 
+. . . . . 1 1 2 . . . . . . . . 
+. . . . . 1 1 1 . . . . . . . . 
+. . . . . 1 1 1 . . . . . . . . 
+. . . . . f . . . . . . . . . . 
+. . . . . f . . . . . . . . . . 
+. . . . . f . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, hero, 0, -76)
+    knife.setKind(SpriteKind.Projectile)
+}
+function Score () {
+	
+}
+function Cloud () {
+	
+}
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    raindrop.destroy()
+})
 function Background () {
     scene.setBackgroundImage(img`
 b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b b 
@@ -122,6 +152,12 @@ b b b b b 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `)
 }
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    Ball()
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    game.over(false)
+})
 function Hero () {
     hero = sprites.create(img`
 . . . . . . . . . . . . . . . . 
@@ -143,32 +179,7 @@ function Hero () {
 `, SpriteKind.Player)
     hero.setPosition(126, 103)
     controller.moveSprite(hero, 100, 0)
-}
-function Score () {
-	
-}
-function Ball () {
-    knife = sprites.createProjectileFromSprite(img`
-. . . . . . . . . . . . . . . . 
-. . . . . 2 . . . . . . . . . . 
-. . . . . 2 2 . . . . . . . . . 
-. . . . . 1 2 2 . . . . . . . . 
-. . . . . 1 1 2 . . . . . . . . 
-. . . . . 1 1 2 . . . . . . . . 
-. . . . . 1 1 1 . . . . . . . . 
-. . . . . 1 1 1 . . . . . . . . 
-. . . . . f . . . . . . . . . . 
-. . . . . f . . . . . . . . . . 
-. . . . . f . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-`, hero, 0, -76)
-}
-function Cloud () {
-	
+    hero.setKind(SpriteKind.Player)
 }
 function Raindrop () {
     raindrop = sprites.createProjectileFromSprite(img`
@@ -191,17 +202,12 @@ function Raindrop () {
 `, cloud, 0, 100)
     raindrop.y += 0
     raindrop.x += Math.randomRange(-10, 200)
+    raindrop.setKind(SpriteKind.Enemy)
 }
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    Ball()
-})
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player, function (sprite, otherSprite) {
-    game.over(false)
-})
 let cloud: Sprite = null
 let raindrop: Sprite = null
-let knife: Sprite = null
 let hero: Sprite = null
+let knife: Sprite = null
 Hero()
 Cloud()
 Background()
@@ -229,4 +235,5 @@ f f f f f f f f f f f f f f f f
 . . . . . . . . . . . . . . . . 
 `, 50, 0)
     cloud.setPosition(Math.randomRange(0, 10), 9)
+    cloud.setKind(SpriteKind.Food)
 })
